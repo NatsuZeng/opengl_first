@@ -1,0 +1,13 @@
+﻿  graphicDemo3.cpp
+e:\opengl\project\graphic1\graphic1\graphicdemo3.cpp(214): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+e:\opengl\project\graphic1\graphic1\graphicdemo3.cpp(215): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+e:\opengl\project\graphic1\graphic1\graphicdemo3.cpp(234): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+e:\opengl\project\graphic1\graphic1\graphicdemo3.cpp(271): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+e:\opengl\project\graphic1\graphic1\graphicdemo3.cpp(312): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+e:\opengl\project\graphic1\graphic1\graphicdemo3.cpp(313): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+e:\opengl\project\graphic1\graphic1\graphicdemo3.cpp(316): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+e:\opengl\project\graphic1\graphic1\graphicdemo3.cpp(317): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+e:\opengl\project\graphic1\graphic1\graphicdemo3.cpp(319): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+e:\opengl\project\graphic1\graphic1\graphicdemo3.cpp(320): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+e:\opengl\project\graphic1\graphic1\graphicdemo3.cpp(328): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+  Graphic1.vcxproj -> E:\OpenGL\project\Graphic1\Debug\Graphic1.exe

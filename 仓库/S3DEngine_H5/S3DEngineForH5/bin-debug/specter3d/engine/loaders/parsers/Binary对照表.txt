@@ -1,0 +1,9 @@
+_byteData.endian=Byte.BIG_ENDIAN; 大头
+_byteData.endian=Byte.LITTLE_ENDIAN; 小头
+_byteData.pos 对应AS3  _byteData.position;
+函数							类型				占位
+_byteData.getUint16()  		Short 			2位
+_byteData.getInt32()		int 			4位
+_byteData.getUint32()		uint 			4位
+_byteData.getFloat32()		float 			4位
+_byteData.readByte()		byte 			1位

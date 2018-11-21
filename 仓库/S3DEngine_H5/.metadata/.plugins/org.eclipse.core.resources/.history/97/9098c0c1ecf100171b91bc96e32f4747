@@ -1,0 +1,313 @@
+package
+{
+	import laya.events.Event;
+	import laya.resource.HTMLImage;
+	import laya.utils.Handler;
+	
+	import specter3d.engine.controllers.HoverController;
+	import specter3d.engine.controllers.LookAtController;
+	import specter3d.engine.core.Layer3D;
+	import specter3d.engine.core.Stage3D;
+	import specter3d.engine.core.camera.Camera3D;
+	import specter3d.engine.core.context.AppGlobalContext;
+	import specter3d.engine.core.geom.Vector3D;
+	import specter3d.engine.debug.Debug;
+	import specter3d.engine.events.EngineContextEvent;
+	import specter3d.engine.interfaces.IRenderUpdate;
+	import specter3d.engine.lights.DirectionLight;
+	import specter3d.engine.lights.LightBase;
+	import specter3d.engine.lights.PointLight;
+	import specter3d.engine.loaders.AssetLib;
+	import specter3d.engine.loaders.ResourceVo;
+	import specter3d.engine.managers.NativeEventManager;
+	import specter3d.engine.materials.ColorMaterial3D;
+	import specter3d.engine.materials.TextureMaterial3D;
+	import specter3d.engine.materials.lightpickers.LightPicker;
+	import specter3d.engine.objects.Mesh3D;
+	import specter3d.engine.primitives.CubeGeometry;
+	import specter3d.engine.primitives.PlaneGeometry;
+	import specter3d.engine.primitives.SphereGeometry;
+	import specter3d.engine.resources.BitmapTexture;
+	import specter3d.engine.resources.Geometry3D;
+
+	/**
+	 * ...
+	 * @author wangcx
+	 */
+	public class S3DEngineForH5 implements IRenderUpdate
+	{
+
+		public function S3DEngineForH5()
+		{
+			initEngine();
+		}
+
+		public var cameraController:HoverController;
+		public var distanceIncrement:Number=0;
+		public var distanceSpeed:Number=1000;
+		public var lastMouseX:Number;
+		public var lastMouseY:Number;
+		public var lastPanAngle:Number;
+		public var lastTiltAngle:Number;
+
+		public var move:Boolean=false;
+		public var panIncrement:Number=0;
+		public var panSpeed:Number=2;
+		public var tiltIncrement:Number=0;
+		public var tiltSpeed:Number=2;
+
+		private var _controller:LookAtController;
+
+		private var _dLight:DirectionLight;
+//		private var _pLight:PointLight;
+//		private var _pLight2:PointLight;
+//		private var _pLight3:PointLight;
+//		private var _pLight4:PointLight;
+		private var _lightMesh:Mesh3D;
+		private var _lightMesh2:Mesh3D;
+		private var _lightMesh3:Mesh3D;
+		private var _lightMesh4:Mesh3D;
+
+		public function update(time:Number, dt:Number=0):void
+		{
+			if (_controller)
+			{
+				_controller.lookAtPosition=new Vector3D();
+				_controller.update();
+			}
+
+			if (cameraController)
+			{
+				if (!move)
+				{
+					cameraController.panAngle+=panIncrement;
+					cameraController.tiltAngle+=tiltIncrement;
+					cameraController.distance+=distanceIncrement;
+				}
+				cameraController.update(false);
+			}
+			
+			/*if (_pLight)
+			{
+				_pLight.transform.x = 400 * Math.cos(time / 1000);
+				_pLight.transform.z = 400 * Math.sin(time / 1000);
+				_lightMesh.transform.setPosition(_pLight.transform.x, _pLight.transform.y, _pLight.transform.z);
+			}
+			if (_pLight2)
+			{
+				_pLight2.transform.x = -400 * Math.cos(time / 1000);
+				_pLight2.transform.z = -400 * Math.sin(time / 1000);
+				_lightMesh2.transform.setPosition(_pLight2.transform.x, _pLight2.transform.y, _pLight2.transform.z);
+			}
+			if (_pLight3)
+			{
+				_pLight3.transform.x = 400 * Math.cos(time / 1000);
+				_pLight3.transform.z = -400 * Math.sin(time / 1000);
+				_lightMesh3.transform.setPosition(_pLight3.transform.x, _pLight3.transform.y, _pLight3.transform.z);
+			}
+			if (_pLight4)
+			{
+				_pLight4.transform.x = -400 * Math.cos(time / 1000);
+				_pLight4.transform.z = 400 * Math.sin(time / 1000);
+				_lightMesh4.transform.setPosition(_pLight4.transform.x, _pLight4.transform.y, _pLight4.transform.z);
+			}*/
+		}
+
+		private function _loaded3DModelSOver():void
+		{
+			var _3dsGeometry:Geometry3D=AssetLib.getAsset("asset/3ds/Teapot.3ds", "S3DEngineForH5._loaded") as Geometry3D;
+			var _3dsImage:HTMLImage=AssetLib.getImage("asset/3ds/Fieldstone.png", "S3DEngineForH5._loaded");
+			var _3dsMat:TextureMaterial3D=new TextureMaterial3D(new BitmapTexture(_3dsImage));
+			_3dsMat.lightPicker=new LightPicker(Vector.<LightBase>[_pLight,_pLight2,_pLight3,_pLight4]);
+			_3dsMat.bothSides = true;
+			
+			var _3dsMesh:Mesh3D=new Mesh3D(_3dsGeometry, _3dsMat);
+			_3dsMesh.transform.setPosition(0, 100, 0);
+			_3dsMesh.transform.setRotation(-90, 0, 0);
+			_3dsMesh.transform.setScale(2);
+			AppGlobalContext.stage3d.addChild(_3dsMesh);
+		}
+
+		private function _onMouseDown(event:Event):void
+		{
+			move=true;
+			lastPanAngle=cameraController.panAngle;
+			lastTiltAngle=cameraController.tiltAngle;
+			lastMouseX=event.mouseX;
+			lastMouseY=event.mouseY;
+		}
+
+		private function _onMouseMove(event:Event):void
+		{
+			if (!move)
+				return;
+			cameraController.panAngle=0.3 * (event.mouseX - lastMouseX) + lastPanAngle;
+			cameraController.tiltAngle=0.3 * (event.mouseY - lastMouseY) + lastTiltAngle;
+			lastMouseX=event.mouseX;
+			lastMouseY=event.mouseY;
+			lastPanAngle=cameraController.panAngle;
+			lastTiltAngle=cameraController.tiltAngle;
+		}
+
+		private function _onMouseUp(event:Event):void
+		{
+			move=false;
+		}
+
+		private function _onMouseWheel(event:Event):void
+		{
+			cameraController.distance+=event.delta;
+		}
+
+		private function _testRay():void
+		{
+			var layer:Layer3D=AppGlobalContext.stage3d.getLayer3D(Stage3D.DEFAULT_LAYER3D);
+			var camera3d:Camera3D=layer.camera3d;
+			camera3d.transform.setPosition(0, 500, -600);
+			camera3d.lookAt(new Vector3D());
+
+			cameraController=new HoverController(camera3d, null, 0, 10, 1000, -70, 70);
+			cameraController.lookAtPosition=new Vector3D();
+			NativeEventManager.instance.on(Event.MOUSE_DOWN, this, _onMouseDown);
+			NativeEventManager.instance.on(Event.MOUSE_UP, this, _onMouseUp);
+			NativeEventManager.instance.on(Event.MOUSE_MOVE, this, _onMouseMove);
+			NativeEventManager.instance.on(Event.MOUSE_WHEEL, this, _onMouseWheel);
+		}
+
+		private function create3DSModel():void
+		{
+			var resources:Vector.<ResourceVo>=Vector.<ResourceVo>[
+				new ResourceVo("asset/3ds/Teapot.3ds", 52),
+				new ResourceVo("asset/3ds/Fieldstone.png", 51), 
+				new ResourceVo("asset/UV_Grid_Sm.jpg", 50), 
+				new ResourceVo("asset/floor_diffuse.jpg", 49)];
+			AppGlobalContext.fileLoader.loads(resources, Handler.create(this, _loaded3DModelSOver));
+		}
+
+		/**
+		 * 创建灯光
+		 *
+		 */
+		private function createLights():void
+		{
+			_dLight=new DirectionLight(0.0, 0.0, -10.0);
+			_dLight.color=0xffffff; //设置灯光颜色
+			_dLight.ambientColor=0x2833d2; //设置环境颜色
+			_dLight.diffuse=1.2;
+			_dLight.specularShininess=0.2; //设置镜面亮度
+			AppGlobalContext.stage3d.addChild(_dLight);
+
+			_pLight=new PointLight();
+			_pLight.color=0xffffff; //设置灯光颜色
+			_pLight.ambientColor=0x00000;
+			_pLight.diffuse=1.5;
+			_pLight.specularShininess=0.2; //设置镜面亮度
+			_pLight.transform.setPosition(0, 300, -400);
+			AppGlobalContext.stage3d.addChild(_pLight);
+			
+			_pLight2=new PointLight();
+			_pLight2.color=0xffffff; //设置灯光颜色
+			_pLight2.ambientColor=0x00000;
+			_pLight2.diffuse=1.5;
+			_pLight2.specularShininess=0.2; //设置镜面亮度
+			_pLight2.transform.setPosition(0, 300, 400);
+			AppGlobalContext.stage3d.addChild(_pLight2);
+			
+			_pLight3=new PointLight();
+			_pLight3.color=0xffffff; //设置灯光颜色
+			_pLight3.ambientColor=0x00000;
+			_pLight3.diffuse=1.5;
+			_pLight3.specularShininess=0.2; //设置镜面亮度
+			_pLight3.transform.setPosition(400, 300, 0);
+			AppGlobalContext.stage3d.addChild(_pLight3);
+			
+			_pLight4=new PointLight();
+			_pLight4.color=0xffffff; //设置灯光颜色
+			_pLight4.ambientColor=0x00000;
+			_pLight4.diffuse=1.5;
+			_pLight4.specularShininess=0.2; //设置镜面亮度
+			_pLight4.transform.setPosition(-400, 300, 0);
+			AppGlobalContext.stage3d.addChild(_pLight4);
+			
+			// 点光源测试
+			var _sphereGeom:SphereGeometry = new SphereGeometry(10,32,32);
+			var _colorMat:ColorMaterial3D = new ColorMaterial3D(0x0000FF);
+			_lightMesh = new Mesh3D(_sphereGeom,_colorMat);
+			AppGlobalContext.stage3d.addChild(_lightMesh);
+			_lightMesh.transform.setPosition(_pLight.transform.x, _pLight.transform.y, _pLight.transform.z);
+						
+			_lightMesh2 = new Mesh3D(_sphereGeom,_colorMat);
+			AppGlobalContext.stage3d.addChild(_lightMesh2);
+			_lightMesh2.transform.setPosition(_pLight2.transform.x, _pLight2.transform.y, _pLight2.transform.z);
+			
+			_lightMesh3 = new Mesh3D(_sphereGeom,_colorMat);
+			AppGlobalContext.stage3d.addChild(_lightMesh3);
+			_lightMesh3.transform.setPosition(_pLight3.transform.x, _pLight3.transform.y, _pLight3.transform.z);
+			
+			_lightMesh4 = new Mesh3D(_sphereGeom,_colorMat);
+			AppGlobalContext.stage3d.addChild(_lightMesh4);
+			_lightMesh4.transform.setPosition(_pLight4.transform.x, _pLight4.transform.y, _pLight4.transform.z);
+		}
+
+		private function createObject():void
+		{
+			var _lightPicker:LightPicker = new LightPicker(Vector.<LightBase>[_pLight,_pLight2,_pLight3,_pLight4]);
+			
+			var _planeGeom:PlaneGeometry = new PlaneGeometry(1024,1024,1,true);
+			var _sphereGeom:SphereGeometry = new SphereGeometry(50,32,32);
+			var _boxGeom:CubeGeometry = new CubeGeometry();
+			
+			var _redColorMat:ColorMaterial3D = new ColorMaterial3D(0xFF0000);
+			var _blueColorMat:ColorMaterial3D = new ColorMaterial3D(0x0000FF);
+			var _planeColorMat:ColorMaterial3D = new ColorMaterial3D(0x00FF00);
+			
+			_planeColorMat.lightPicker = _blueColorMat.lightPicker= _redColorMat.lightPicker=_lightPicker;
+			
+			var _sphereMesh:Mesh3D = new Mesh3D(_sphereGeom,_redColorMat);
+			_sphereMesh.transform.setPosition(300,50,0);
+			AppGlobalContext.stage3d.addChild(_sphereMesh);
+			
+			_sphereMesh = new Mesh3D(_sphereGeom,_blueColorMat);
+			_sphereMesh.transform.setPosition(-300,50,0);
+			AppGlobalContext.stage3d.addChild(_sphereMesh);
+			
+			_sphereMesh = new Mesh3D(_sphereGeom,_redColorMat);
+			_sphereMesh.transform.setPosition(0,50,-300);
+			AppGlobalContext.stage3d.addChild(_sphereMesh);
+			
+			_sphereMesh = new Mesh3D(_sphereGeom,_blueColorMat);
+			_sphereMesh.transform.setPosition(0,50,300);
+			AppGlobalContext.stage3d.addChild(_sphereMesh);
+			
+			var _planeMesh:Mesh3D = new Mesh3D(_planeGeom,_planeColorMat);
+			AppGlobalContext.stage3d.addChild(_planeMesh);
+		}
+		
+		/**
+		 * 初始化引擎
+		 *
+		 */
+		private function initEngine():void
+		{
+			Debug.setChannel(Debug.ALL);
+			Debug.dotrace("wangcx", "S3DEngineForH5.initEngine()");
+			AppGlobalContext.initEngine(60);
+			AppGlobalContext.on(EngineContextEvent.ENGINE_INIT_COMPLETE, this, onEngineInitComplete);
+		}
+
+		/**
+		 * 初始化引擎结束
+		 *
+		 */
+		private function onEngineInitComplete():void
+		{
+			AppGlobalContext.off(EngineContextEvent.ENGINE_INIT_COMPLETE, this, onEngineInitComplete);
+			AppGlobalContext.renderDrive.register(this);
+			_testRay();
+			createLights();
+			create3DSModel();
+			createObject();
+		}
+	}
+
+}

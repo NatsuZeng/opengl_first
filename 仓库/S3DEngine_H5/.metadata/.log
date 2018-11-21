@@ -1,0 +1,88 @@
+!SESSION 2018-01-05 15:41:16.904 -----------------------------------------------
+eclipse.buildId=M20110909-1335
+java.version=1.6.0_31
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=zh_CN
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data F:\1233\S3DEngine_H5
+
+!ENTRY org.eclipse.osgi 2 1 2018-01-05 15:42:45.601
+!MESSAGE NLS unused message: WhiteSpaceTabPage_try in: org.eclipse.jdt.internal.ui.preferences.formatter.FormatterMessages
+
+!ENTRY org.eclipse.jface 2 0 2018-01-05 15:43:21.354
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2018-01-05 15:43:21.354
+!MESSAGE A conflict occurred for CTRL+SHIFT+F:
+Binding(CTRL+SHIFT+F,
+	ParameterizedCommand(Command(com.adobe.flexbuilder.as.editor.organize.autoformat,应用格式化,
+		,
+		Category(com.adobe.flexbuilder.as.editor.source.editing.category,ActionScript 源代码编辑,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	com.adobe.flexide.editorcore.flexEditorScope,,,system)
+Binding(CTRL+SHIFT+F,
+	ParameterizedCommand(Command(FlexPrettyPrintFormat.commands.addons.flexbuilder,Format MXML/ActionScript,
+		Format Adobe MXML or ActionScript code.  Format the selected lines or the entire document if there is no selection.,
+		Category(FlexPrettyPrintCommand.commands.category,Flex,null,true),
+		flexprettyprint.handlers.FlexPrettyFormatHandler@62dc1805,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	com.adobe.flexide.editorcore.flexEditorScope,,,system)
+
+!ENTRY com.adobe.flexide.launching 4 1 2018-01-05 15:43:23.390
+!MESSAGE Could not find flash player executable, letting the OS determine one:D:\Program Files\Adobe\Adobe Flash Builder 4.7 (64 Bit)\player\win\14.0\FlashPlayerDebugger.exe
+
+!ENTRY org.eclipse.jface 2 0 2018-01-05 15:43:25.111
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2018-01-05 15:43:25.111
+!MESSAGE A conflict occurred for CTRL+G:
+Binding(CTRL+G,
+	ParameterizedCommand(Command(com.adobe.flexbuilder.as.editor.find.all.declarations.in.workspace,在工作空间中查找所有声明,
+		,
+		Category(com.adobe.flexbuilder.editorcore.navigation.category,导航,null,true),
+		LegacyHandlerWrapper(ActionHandler(action=com.adobe.flexbuilder.as.editor.ui.actions.FindAllDeclarationsAction@62bc2ca4)),
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	com.adobe.flexide.editorcore.flexEditorScope,,,system)
+Binding(CTRL+G,
+	ParameterizedCommand(Command(com.adobe.flexbuilder.as.editor.find.all.declarations.in.workspace,在工作空间中查找所有声明,
+		,
+		Category(com.adobe.flexbuilder.editorcore.navigation.category,导航,null,true),
+		LegacyHandlerWrapper(ActionHandler(action=com.adobe.flexbuilder.as.editor.ui.actions.FindAllDeclarationsAction@62bc2ca4)),
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	com.adobe.flexbuilder.as.editor.context.packageexplorer,,,system)
+Binding(CTRL+G,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.edit.text.java.search.declarations.in.workspace,工作空间中的声明,
+		在工作空间中搜索对所选元素的声明,
+		Category(org.eclipse.search.ui.category.search,搜索,搜索命令类别,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SUBENTRY 1 org.eclipse.jface 2 0 2018-01-05 15:43:25.111
+!MESSAGE A conflict occurred for CTRL+SHIFT+G:
+Binding(CTRL+SHIFT+G,
+	ParameterizedCommand(Command(com.adobe.flexbuilder.as.editor.find.all.references.in.workspace,在工作空间中查找所有引用,
+		,
+		Category(com.adobe.flexbuilder.editorcore.navigation.category,导航,null,true),
+		LegacyHandlerWrapper(ActionHandler(action=com.adobe.flexbuilder.as.editor.ui.actions.FindAllReferencesAction@3016f5a0)),
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	com.adobe.flexide.editorcore.flexEditorScope,,,system)
+Binding(CTRL+SHIFT+G,
+	ParameterizedCommand(Command(com.adobe.flexbuilder.as.editor.find.all.references.in.workspace,在工作空间中查找所有引用,
+		,
+		Category(com.adobe.flexbuilder.editorcore.navigation.category,导航,null,true),
+		LegacyHandlerWrapper(ActionHandler(action=com.adobe.flexbuilder.as.editor.ui.actions.FindAllReferencesAction@3016f5a0)),
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	com.adobe.flexbuilder.as.editor.context.packageexplorer,,,system)
+Binding(CTRL+SHIFT+G,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.edit.text.java.search.references.in.workspace,工作空间中的引用,
+		在工作空间中搜索对所选元素的引用,
+		Category(org.eclipse.search.ui.category.search,搜索,搜索命令类别,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)

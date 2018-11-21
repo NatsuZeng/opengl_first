@@ -1,0 +1,19 @@
+threejs:
+
+Object
+	matrix
+	matrixWorld	= parent.matrixWorld * matrix
+	modelViewMatrix	= camera.matrixWorldInverse * this.matrixWorld
+
+Camera
+	matrixWorldInverse = inverse(matrixWorld)
+	projectionMatrix = makeFrustum(left, right, bottom, top, near, far)
+	lookAt = {
+		m1 = new Matrix4();
+		m1.lookAt(this.position, vector, this.up);
+		this.quanernion.setFromRotation(m1);
+	}
+	
+mvPosition = modelViewMatrix * vec4(position, 1.0);
+	
+
