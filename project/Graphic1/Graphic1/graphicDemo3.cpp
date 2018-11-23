@@ -153,7 +153,7 @@ int main()
 	glEnableVertexAttribArray(0);
 
 	unsigned int contatiner = loadTexture("resources/textures/container2.png");
-	unsigned int contatiner1 = loadTexture("resources/textures/lighting_maps_specular_color.png");
+	unsigned int contatiner1 = loadTexture("resources/textures/container2_specular.png");
 
 	//glm::mat4 view(1.0f);
 	glm::mat4 projection(1.0f);
@@ -207,14 +207,17 @@ int main()
 		glm::vec3 lightColor(1.0f);
 		glm::vec3 ambientColor = lightColor * glm::vec3(0.2f);
 		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
-		objectShader.setVec3("light.ambient", ambientColor);
-		objectShader.setVec3("light.diffuse", diffuseColor);
-		objectShader.setVec3("light.specular", lightColor);
+		objectShader.setVec3("pointLight.ambient", ambientColor);
+		objectShader.setVec3("pointLight.diffuse", diffuseColor);
+		objectShader.setVec3("pointLight.specular", lightColor);
+		objectShader.setFloat("pointLight.constant", 1.0f);
+		objectShader.setFloat("pointLight.linear", 0.09f);
+		objectShader.setFloat("pointLight.quadratic", 0.032f);
 
 		lightPos.x = sin(glfwGetTime());
 		lightPos.y = cos(glfwGetTime());
 		lightPos.z = 0;
-		objectShader.setVec3("light.position", lightPos);
+		objectShader.setVec3("pointLight.position", lightPos);
 		objectShader.setVec3("viewPos", camera.Position);
 
 		//phong material color
@@ -222,6 +225,23 @@ int main()
 		objectShader.setInt("material.diffuse", 0);
 		objectShader.setInt("material.specular", 1);
 		objectShader.setFloat("material.shininess", 64.0f);
+
+		glm::vec3 sunPosition(10.0f, 10.0f, -10.0f);
+		objectShader.setVec3("directionLight.direction", -sunPosition);
+		objectShader.setVec3("directionLight.ambient", ambientColor);
+		objectShader.setVec3("directionLight.diffuse", diffuseColor);
+		objectShader.setVec3("directionLight.specular", lightColor);
+
+		objectShader.setVec3("spotLight.position", camera.Position);
+		objectShader.setVec3("spotLight.spotDirection", camera.Front);
+		objectShader.setVec3("spotLight.ambient", ambientColor);
+		objectShader.setVec3("spotLight.diffuse", diffuseColor);
+		objectShader.setVec3("spotLight.specular", lightColor);
+		objectShader.setFloat("spotLight.cutOff",glm::cos(glm::radians(12.5f)));
+		objectShader.setFloat("spotLight.outerCutOff",glm::cos(glm::radians(17.5f)));
+		objectShader.setFloat("spotLight.constant", 1.0f);
+		objectShader.setFloat("spotLight.linear", 0.09f);
+		objectShader.setFloat("spotLight.quadratic", 0.032f);
 		
 		glBindVertexArray(objectVAO);
 		for (unsigned int i = 0; i < 10; i++)
@@ -247,6 +267,13 @@ int main()
 		lampShader.setMat4("view", camera.GetViewMatrix());
 		lampShader.setMat4("projection", projection);
 		glBindVertexArray(lampVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		glm::mat4 sunModel(1.0f);
+		sunModel = glm::translate(sunModel, sunPosition);
+		lampShader.setMat4("model", sunModel);
+		lampShader.setMat4("view", camera.GetViewMatrix());
+		lampShader.setMat4("projection", projection);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		glfwSwapBuffers(window);
